@@ -2,18 +2,18 @@ function submitButtonClicked() {
     var userInput = $('#music-input').val();
 
     if (userInput) {
-        $('#music-buttons').append("<button type='button' onclick='searchGif(\"" + userInput + "\")' class='btn btn-primary' value=' " + userInput + "'> " + userInput + " </button>");
+        $('#music-buttons').append("<button type='button' .onclick='searchGif(\"" + userInput + "\")' class='btn btn-primary' value=' " + userInput + "'> " + userInput + " </button>");
     }
 }
 
-function searchGif(gifName) {
+function displayGifs(){
+    var action = $(this).attr("data-name");
+    var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + action + "&api_key=dc6zaTOxFJmzC&limit=10";
+    console.log(queryURL); // displays the constructed url
     $.ajax({
-            url: 'https://api.giphy.com/v1/gifs/search?q= ' + gifName + ' OCOC2bzZyRBRmVfRUz9H3K3RAOy6t9Fg',
-            type: 'GET',
-        })
-        .done(function(response) {
-            displayGif(response);
-        })
+        url: queryURL,
+        method: 'GET'
+    })
 }
 function displayGif(response) {
     $('#musicians').empty();
@@ -26,4 +26,14 @@ function displayGif(response) {
         image = '<div class="col-md-4">' + image + "</div>";
         $('#musicians').append(image);
     }
-
+    $('.movImage').on('click', function () {
+        var state = $(this).attr('data-state');
+        if (state == 'still') {
+            $(this).attr('src', $(this).attr("data-animate"));
+            $(this).attr('data-state', 'animate');
+        } else {
+            $(this).attr('src', $(this).attr("data-still"));
+            $(this).attr('data-state', 'still');
+        }
+    });
+};
